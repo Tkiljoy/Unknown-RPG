@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,21 +7,34 @@ public class Player : MonoBehaviour
 	public float speed;
 
 	private Rigidbody2D rb2d;
+	private Vector2 moveVelocity;
 
 	void Start()
 	{
 
-		rb2d = GetComponent<Rigidbody2D> ();
+		rb2d = GetComponent<Rigidbody2D>();
 
 	}
 
-	void FixedUpdate()
+	void Update()
 		{
-		float moveHorizontal = Input.GetAxis("Horizontal");
-		float moveVertical = Input.GetAxis("Vertical");
-		Vector2 movement = new Vector2(moveHorizontal, moveVertical);
-		rb2d.AddForce (movement* speed);
+		Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+		moveVelocity = moveInput.normalized * speed;
+
+		
 		}
-}
+
+	void FixedUpdate() 
+	{
+
+		rb2d.MovePosition(rb2d.position + moveVelocity * Time.fixedDeltaTime);
+
+	}
+
+
+
+
+}	
+	
 
 
