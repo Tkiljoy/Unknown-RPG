@@ -2,39 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController: MonoBehaviour
 {
-	public float speed;
+	public float moveSpeed;
+	private Animator anim;
 
-	private Rigidbody2D rb2d;
-	private Vector2 moveVelocity;
-
+	private bool playermoving;
+	private Vector2 lastMove;
+	// Start is called before the first frame update
 	void Start()
 	{
-
-		rb2d = GetComponent<Rigidbody2D>();
-
+		anim = GetComponent<Animator>();
 	}
 
+	// Update is called once per frame
 	void Update()
-		{
-		Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-		moveVelocity = moveInput.normalized * speed;
+	{
+		playermoving = false;
 
-		
+		if (Input.GetAxisRaw("Horizontal") > 0.5f || Input.GetAxisRaw("Horizontal") < -0.5f)
+		{
+			transform.Translate(new Vector3(Input.GetAxisRaw("Horizontal") * moveSpeed * Time.deltaTime, 0f, 0f));
+			playermoving = true;
+			lastMove = new Vector2(Input.GetAxisRaw("Horizontal"), 0f);
 		}
 
-	void FixedUpdate() 
-	{
-
-		rb2d.MovePosition(rb2d.position + moveVelocity * Time.fixedDeltaTime);
-
-	}
-
-
-
-
-}	
+		if (Input.GetAxisRaw("Vertical") > 0.5f || Input.GetAxisRaw("Vertical") < -0.5f)
+		{
+			transform.Translate(new Vector3(0f, Input.GetAxisRaw("Vertical") * moveSpeed * Time.deltaTime, 0f));
+			playermoving = true;
+			lastMove = new Vector2(0f, Input.GetAxisRaw("Vertical"));
+		}
+		
 	
 
 
+
+
+		anim.SetFloat("MoveX", Input.GetAxisRaw("Horizontal"));
+		anim.SetFloat("MoveY", Input.GetAxisRaw("Vertical"));
+		anim.SetBool("PlayerMoving", playermoving);
+		anim.SetFloat("LastMoveX", lastMove.x);
+		anim.SetFloat("LastMoveY", lastMove.y);
+	}
+}
