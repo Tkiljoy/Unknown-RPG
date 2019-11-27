@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-
-	public GameObject followTarget;
-	private Vector3 targetPos;
-	public float moveSpeed;
+	public Transform target;
+	public float smoothing;
+	public Vector2 minPos;
+	public Vector2 maxPos;
 
 
 
@@ -18,9 +18,19 @@ public class CameraController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-		targetPos = new Vector3(followTarget.transform.position.x, followTarget.transform.position.y, transform.position.z);
-		transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+		if (transform.position != target.position)
+		{
+			Vector3 targetPosition = new Vector3(target.position.x, target.position.y, transform.position.z);
+			targetPosition.x = Mathf.Clamp(targetPosition.x, minPos.x, maxPos.x);
+			targetPosition.y = Mathf.Clamp(targetPosition.y, minPos.y, maxPos.y);
+
+			transform.position = Vector3.Lerp(transform.position, targetPosition, smoothing);
+		}
+
+		//transform.position = Vector3.Lerp(transform.position, targetPos, moveSpeed * Time.deltaTime);
+
+
     }
 }

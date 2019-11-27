@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class EnemyController: MonoBehaviour
 {
 	public float moveSpeed;
+	
 
 	private Rigidbody2D myRigidbody;
 
@@ -21,6 +22,8 @@ public class EnemyController: MonoBehaviour
 	private bool reloading;
 	private GameObject thePlayer;
 
+	
+
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -31,6 +34,7 @@ public class EnemyController: MonoBehaviour
 
 		timeBetweenMoveCounter = Random.Range(timeBetweenMove * 0.75f, timeBetweenMove * 1.25f);
 		timeToMoveCounter = Random.Range(timeToMove * 0.75f, timeToMove);
+	
 	}
 
 	// Update is called once per frame
@@ -72,13 +76,13 @@ public class EnemyController: MonoBehaviour
 	}
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if (other.gameObject.name == "Player")
+		/*if (other.gameObject.name == "Player")
 		{
 			//Destroy(other.gameObject);
 			other.gameObject.SetActive(false);
 			reloading = true;
 			thePlayer = other.gameObject;
-		}
+		} */
 	}
 
 }
